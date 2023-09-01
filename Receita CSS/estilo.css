@@ -1,0 +1,27 @@
+p.verso{
+    color: blue;
+}
+p.mote{
+    color: red
+}
+.link-estilizado {
+    color: blue;
+    text-decoration: none;
+}
+
+.link-estilizado:hover {
+    color: red;
+    text-decoration: underline;
+}
+
+.link-estilizado:visited {
+    color: purple;
+}
+
+.rounded-avatar {
+    border-radius: 50%; /* Torna a imagem circular */
+    width: 100px; /* Ajuste a largura conforme necessário */
+    height: 100px; /* Ajuste a altura conforme necessário */
+    object-fit: cover; /* Mantém a proporção da imagem e cobre todo o espaço */
+    margin-right: 10px; /* Adiciona um espaço entre a imagem e o texto */
+}
