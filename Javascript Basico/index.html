@@ -1,26 +1,179 @@
 <!DOCTYPE html>
-
-<html>   
+<html>
 <head>
-    <meta charset="UTF-8">      
+    <meta charset="UTF-8">
+    <style>
+        #divBotao {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            justify-content: center;
+        }
+
+        .caixaBotao {
+            background-color: yellow;
+            padding: 10px 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        /* Estilize a classe "botaoCerveja" para os botões de cerveja */
+        .botaoCerveja {
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            width: 200px;
+            text-align: center;
+            display: block; /* Exibir em bloco para que eles apareçam um abaixo do outro */
+        }
+
+        /* Estilize as classes de cores para os botões */
+        .cor1 {
+            background-color: #FF5733;
+        }
+
+        .cor2 {
+            background-color: #33FF57;
+        }
+
+        .cor3 {
+            background-color: #5733FF;
+        }
+
+        .cor4 {
+            background-color: #FFFF33;
+        }
+
+        .cor5 {
+            background-color: aqua;
+        }
+
+        /* Estilize a classe "divCerveja" para o contêiner de botões de cerveja */
+        .divCerveja {
+            overflow-y: auto; /* Adicionar uma barra de rolagem vertical quando necessário */
+            display: none;
+        }
+
+        /* Estilize a tabela */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        /* Estilize as células da tabela */
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+
+        /* Estilize o cabeçalho da tabela */
+        th {
+            background-color: #333;
+            color: white;
+        }
+
+        /* Estilize a classe "imagemCerveja" para as imagens */
+        .imagemCerveja {
+            max-width: 100px; /* Defina o tamanho máximo das imagens */
+            max-height: 100px; /* Defina o tamanho máximo das imagens */
+        }
+    </style>
 </head>
 <body>
-    <div id="meu amor"><button id="botaoCarregar">Carregando cervejas...</button></div>            
-</body>   
+    <div id="divBotao">
+        <button id="botaoExibir" onclick="exibirCervejas()" class="caixaBotao">Exibir Cervejas</button>
+        <button id="botaoOrdenar" onclick="ordenarCervejas()" class="caixaBotao">Ordenar Cervejas</button>
+        <div id="divCerveja" class="divCerveja">
+            <!-- Tabela para os nomes de cerveja -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cerveja</th>
+                        <th>Imagem</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelaCervejas">
+                    <!-- Linhas da tabela serão geradas dinamicamente aqui -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
 <script>
-    let cervejas = ["Guiness", "Desperados", "Becks"]
-    
-    function transformar(item){
-        return `<h1>${item}</h1>`
-}
-function carregarDiv(){
-    let div = document.getElementById("meu amor")
-        //let cervejasHtml = [`<h1>${cervejas[0]}</h1>`,`<h1>${cervejas[1]}</h1>`, `<h1>${cervejas[2]}</h1>`] 
-    let cervejasHtml = cervejas.map(transformar) 
-    div.innerHTML = `${cervejasHtml.join("\n")}`
-}
-    
-    let botao = document.getElementById("botaoCarregar")
-    botao.addEventListener("click", carregarDiv)                 
+    const cervejas = [
+        { nome: "Skol", imagem: "https://d2r9epyceweg5n.cloudfront.net/stores/001/043/122/products/cerveja-skol-600-ml1-c0692bb54601c9f20215676919052972-640-0.jpg" },
+        { nome: "Itaipava", imagem: "https://s3-sa-east-1.amazonaws.com/bluesoft-erp/pb/ecommerce/produtos/fotos/ae29fd52-192a-43c3-8c12-ddd3db0295c1/foto_large.jpg" },
+        { nome: "Brahma", imagem: "https://choppbrahmaexpress.vtexassets.com/arquivos/ids/155796/brahma_-_600ml.png?v=637353454952430000" },
+        { nome: "Antartica", imagem: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSs_y4pUtLOszjdFSoLAkbdLo-bYUmkJgzTul9JIY_RbZqQKF4nY-xQQjw9_CboTVaC9iU&usqp=CAU" },
+        { nome: "Kaiser", imagem: "https://www.kaiser.com.br/media/b5uiw2ch/kaiser_garrafa_600ml.webp" }
+    ];
+
+    let ordemAscendente = true; // Para alternar entre ordenação ascendente e descendente
+
+    function exibirCervejas() {
+        const tabelaCervejas = document.getElementById("tabelaCervejas");
+        const cores = ["cor1", "cor2", "cor3", "cor4", "cor5"];
+        // Limpar conteúdo anterior
+        tabelaCervejas.innerHTML = "";
+
+        // Embaralhar o array de cervejas antes de exibir
+        embaralharCervejas();
+
+        // Gerar linhas da tabela com nomes de cerveja, cores e imagens aleatórios
+        cervejas.forEach((cerveja, i) => {
+            const cor = cores[i];
+            const tr = document.createElement("tr");
+            
+            const tdNome = document.createElement("td");
+            tdNome.textContent = cerveja.nome;
+            tdNome.classList.add(cor);
+            
+            const tdImagem = document.createElement("td");
+            const imagem = document.createElement("img");
+            imagem.src = cerveja.imagem;
+            imagem.classList.add("imagemCerveja");
+            
+            tdImagem.appendChild(imagem);
+            
+            tr.appendChild(tdNome);
+            tr.appendChild(tdImagem);
+            
+            tabelaCervejas.appendChild(tr);
+        });
+
+        // Exibir a tabela
+        document.getElementById("divCerveja").style.display = "block";
+    }
+
+    function ordenarCervejas() {
+        // Ordenar o array de cervejas pelo nome
+        cervejas.sort((a, b) => {
+            const nomeA = a.nome.toLowerCase();
+            const nomeB = b.nome.toLowerCase();
+            if (ordemAscendente) {
+                return nomeA.localeCompare(nomeB);
+            } else {
+                return nomeB.localeCompare(nomeA);
+            }
+        });
+        
+        ordemAscendente = !ordemAscendente; // Alternar entre ascendente e descendente
+        exibirCervejas();
+    }
+
+    function embaralharCervejas() {
+        for (let i = cervejas.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [cervejas[i], cervejas[j]] = [cervejas[j], cervejas[i]];
+        }
+    }
 </script>
 </html>
