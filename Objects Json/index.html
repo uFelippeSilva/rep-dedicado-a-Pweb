@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8"> 
+    <style>
+        /* Estilo para centralizar o botão horizontalmente */
+        #botaoCarregar {
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 10px;
+        }
+        
+        /* Estilo para centralizar a tabela horizontalmente */
+        #cervejasTable {
+            margin: 0 auto;
+            border-collapse: collapse; /* Remove espaços entre as células da tabela */
+            width: 80%; /* Largura da tabela */
+            font-family: Arial, sans-serif;
+        }
+        
+        /* Estilo para o cabeçalho da tabela */
+        #cervejasTable th {
+            background-color: #f2f2f2;
+            text-align: left;
+            padding: 8px;
+        }
+        
+        /* Estilo para as células da tabela */
+        #cervejasTable td {
+            border-bottom: 1px solid #ddd;
+            padding: 8px;
+        }
+        
+        /* Estilo para linhas ímpares da tabela */
+        #cervejasTable tbody tr:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+        
+        /* Estilo para linhas pares da tabela */
+        #cervejasTable tbody tr:nth-child(even) {
+            background-color: #e5e5e5;
+        }
+        
+        /* Estilo para hover (passar o mouse) nas linhas da tabela */
+        #cervejasTable tbody tr:hover {
+            background-color: #dcdcdc;
+        }
+        
+        /* Estilo para o campo de pesquisa */
+        #filtro {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+    </style>     
+</head>
+
+<body>
+
+    <input type="text" id="filtro" placeholder="Filtrar cervejas...">
+    <button id="botaoCarregar">Carregar cervejas</button>
+    <div id="cervejasDiv"></div>
+    <div id="outraDiv"></div> <!-- Exemplo de outro elemento onde a tabela pode ser carregada -->
+</body>   
+
+<script>
+    let cervejas = [
+        {
+            name: "Guiness", 
+            alcohol: "10%",
+            style: "Imperial Stout",
+            ibu: "40"            
+        }, 
+        {
+            name: "Desperados",
+            alcohol: "6%",
+            style: "Cream Ale",
+            ibu: "20"             
+        }, 
+        {
+            name: "Becks",
+            alcohol: "5%",
+            style: "Lager",
+            ibu: "25"             
+        },
+        {
+            name: "Itaipava",
+            alcohol: "4,5%",
+            style: "Pilsner",
+            ibu: "30"
+        },
+        {
+            name: "Heineken",
+            alcohol: "5%",
+            style: "Pale Lager",
+            ibu: "21"             
+        }, 
+        {
+            name: "Stella Artois",
+            alcohol: "5%",
+            style: "Pilsner",
+            ibu: "30"             
+        }, 
+        {
+            name: "Corona",
+            alcohol: "4.6%",
+            style: "Pale Lager",
+            ibu: "18"             
+        }
+    ]
+    
+    // Função carregarTabela agora aceita um parâmetro opcional para o ID do elemento,
+    // um array de strings para os cabeçalhos das colunas e um array de strings para as
+    // propriedades a serem exibidas
+    const carregarTabela = (cs, elementId = "cervejasDiv", headers = ["Nome", "Álcool", "Estilo", "Amargor"], properties = ["name", "alcohol", "style", "ibu"]) => {
+        const tbody = document.createElement("tbody");
+        cs.forEach(item => {
+            const row = document.createElement("tr");
+            headers.forEach((headerText, index) => {
+                const cell = document.createElement("td");
+                const property = properties[index];
+                cell.textContent = item[property] || ""; // Use a propriedade correspondente ou vazio se não existir
+                row.appendChild(cell);
+            });
+            tbody.appendChild(row);
+        });
+
+        // Encontra o elemento pelo ID e adiciona a tabela
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.innerHTML = ""; // Limpa o conteúdo existente
+            const table = document.createElement("table");
+            table.id = "cervejasTable";
+            const thead = document.createElement("thead");
+            const headerRow = document.createElement("tr");
+            headers.forEach(headerText => {
+                const th = document.createElement("th");
+                th.textContent = headerText;
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+            table.appendChild(tbody);
+            element.appendChild(table);
+        }
+    }
+    
+    let botao = document.getElementById("botaoCarregar");
+    botao.addEventListener("click", () => carregarTabela(cervejas, "cervejasDiv"));
+
+    const filtro = document.getElementById("filtro");
+    filtro.addEventListener("input", () => {
+        const termo = filtro.value.toLowerCase();
+        const cervejasFiltradas = cervejas.filter(item => item.name.toLowerCase().includes(termo));
+        carregarTabela(cervejasFiltradas, "cervejasDiv");
+    });
+</script>
+
+</html>
