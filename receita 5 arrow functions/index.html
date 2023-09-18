@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /* Estilos para centralizar elementos */
+        body {
+            text-align: center; /* Centraliza horizontalmente todo o conteúdo */
+        }
+
+        #botaoCarregar {
+            margin: 20px 0; /* Adiciona espaço acima e abaixo do botão */
+        }
+
+        #cervejasTable {
+            margin: 0 auto; /* Centraliza a tabela horizontalmente */
+        }
+    </style>
+</head>
+<body>
+    <button id="botaoCarregar">Carregando cervejas...</button>
+    <table id="cervejasTable">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Álcool</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        let cervejas = [
+            {
+                name: "Guinness",
+                alcohol: "10%"
+            },
+            {
+                name: "Desperados",
+                alcohol: "6%"
+            },
+            {
+                name: "Becks",
+                alcohol: "5%"
+            }
+        ]
+
+        const carregarTabela = cs => {
+            const tbody = document.querySelector("#cervejasTable tbody");
+            tbody.innerHTML = "";
+
+            cs.forEach(item => {
+                const row = document.createElement("tr");
+                const nomeCell = document.createElement("td");
+                nomeCell.textContent = item.name;
+                const alcoolCell = document.createElement("td");
+                alcoolCell.textContent = item.alcohol;
+                row.appendChild(nomeCell);
+                row.appendChild(alcoolCell);
+                tbody.appendChild(row);
+            });
+        }
+
+        let botao = document.getElementById("botaoCarregar")
+        botao.addEventListener("click", () => carregarTabela(cervejas))
+    </script>
+</body>
+</html>
