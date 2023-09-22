@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <div><button id="botaoCarregar">Carregando cervejas...</button></div>
+    <div id="cervejasDiv"></div>
+</body>
+
+<script>
+    let cervejas = [
+        {
+            "id": 4881,
+            "uid": "6e126411-8a5d-4c17-92d5-98dfbacab080",
+            "brand": "Coors lite",
+            "name": "Brooklyn Black",
+            "style": "Light Hybrid Beer",
+            "hop": "Olympic",
+            "yeast": "1187 - Ringwood Ale",
+            "malts": "Chocolate malt",
+            "ibu": "22 IBU",
+            "alcohol": "4.0%",
+            "blg": "6.9°Blg"
+        },
+        {
+            "id": 6242,
+            "uid": "1f61bbab-0486-4695-9527-06fb63d9f88d",
+            "brand": "Birra Moretti",
+            "name": "St. Bernardus Abt 12",
+            "style": "Bock",
+            "hop": "Chelan",
+            "yeast": "1728 - Scottish Ale",
+            "malts": "Black malt",
+            "ibu": "94 IBU",
+            "alcohol": "9.4%",
+            "blg": "11.7°Blg"
+        },
+        {
+            "id": 7923,
+            "uid": "cff898b0-8ebd-4d12-9b48-17b1d60aef32",
+            "brand": "Corona Extra",
+            "name": "Stone Imperial Russian Stout",
+            "style": "Strong Ale",
+            "hop": "Columbia",
+            "yeast": "3787 - Trappist High Gravity",
+            "malts": "Black malt",
+            "ibu": "13 IBU",
+            "alcohol": "9.1%",
+            "blg": "18.8°Blg"
+        }
+    ];
+    
+    const carregarDiv = cs => {
+        const div = document.getElementById("cervejasDiv");
+        const itensHtml = cs.map(beer => {
+            return `
+                <div>
+                    <strong>Nome:</strong> ${beer.name}<br>
+                    <strong>Marca:</strong> ${beer.brand}<br>
+                    <strong>Estilo:</strong> ${beer.style}<br>
+                    <strong>Lúpulo:</strong> ${beer.hop}<br>
+                    <strong>Levedura:</strong> ${beer.yeast}<br>
+                    <strong>Malte:</strong> ${beer.malts}<br>
+                    <strong>IBU:</strong> ${beer.ibu}<br>
+                    <strong>Teor alcoólico:</strong> ${beer.alcohol}<br>
+                    <strong>BLG:</strong> ${beer.blg}<br>
+                </div>
+            `;
+        });
+        div.innerHTML = `${itensHtml.join("<hr>")}`;
+    }
+
+    async function carregarCervejas() {
+        try {
+            let res = await fetch("https://random-data-api.com/api/v2/beers?size=3");
+            const novasCervejas = await res.json();
+            cervejas = cervejas.concat(novasCervejas);
+            carregarDiv(cervejas);
+        } catch (err) {
+            document.getElementById("cervejasDiv").innerHTML = "Fudeu...";
+        }
+    }
+
+    let botao = document.getElementById("botaoCarregar");
+    botao.addEventListener("click", () => carregarCervejas());
+</script>
+
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela de Carros</title>
+    <style>
+        /* Estilização básica da tabela */
+        .table {
+            font-family: Arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .table th, .table td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        .table th {
+            background-color: #f2f2f2;
+        }
+
+        .table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .table tr:hover {
+            background-color: #ddd;
+        }
+
+        /* Estilo para o título da tabela */
+        .table-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="tabelaDiv"></div>
+
+    <!-- Importe o arquivo table.js corretamente -->
+    <script src="table.js"></script>
+    <script>
+        async function fetchCarData() {
+            try {
+                let res = await fetch("https://jsonplaceholder.typicode.com/users");
+                if (!res.ok) {
+                    throw new Error(`Erro na solicitação: ${res.status} - ${res.statusText}`);
+                }
+                const carData = await res.json();
+                return carData;
+            } catch (err) {
+                console.error(err);
+                return [];
+            }
+        }
+
+        async function displayUserTable() {
+            const carData = await fetchCarData();
+            const tabelaDiv = document.getElementById("tabelaDiv");
+            const tabela = createTable(carData);
+            tabela.classList.add("table"); // Adicione a classe de estilo da tabela
+            tabelaDiv.appendChild(tabela);
+
+            // Adicione um título à tabela
+            const tableTitle = document.createElement("div");
+            tableTitle.classList.add("table-title");
+            tableTitle.textContent = "Tabela de Carros";
+            tabelaDiv.insertBefore(tableTitle, tabelaDiv.firstChild);
+        }
+
+        displayUserTable();
+    </script>
+</body>
+</html>
